@@ -18,10 +18,12 @@ Open Source software: [Apache License 2.0](https://spdx.org/licenses/Apache-2.0.
 
 ## &nbsp;
 
-<!-- fancy-readme start --> Jinjanator can be extended through the use
-of plugins; these are Python packages installed into the same
-environment as the tool itself, which use special markers to 'hook'
-into various features. There is a minimal example in the
+<!-- fancy-readme start -->
+
+Jinjanator can be extended through the use of plugins; these are
+Python packages installed into the same environment as the tool
+itself, which use special markers to 'hook' into various
+features. There is a minimal example in the
 [plugin_example](plugin_example) directory which demonstrates three of
 the four possible hooks.
 
@@ -49,7 +51,7 @@ For more details on the functionality and requirements for 'filters',
 Normally there is no need to install this package; instead it should
 be listed as one of the dependencies for the plugin package itself.
 
-Note: It is *strongly* encouraged to pin the dependency for this
+Note: It is *strongly* recommended to pin the dependency for this
 package to a specific version, or if not, a "year.release" version
 range (like "23.2.*"). Failure to pin to a very narrow range of
 versions may result in breakage of a plugin when the API is changed in
