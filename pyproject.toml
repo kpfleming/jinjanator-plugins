@@ -41,6 +41,7 @@ dependencies = [
 "Homepage" = "https://github.com/kpfleming/jinjanator-plugins"
 
 [tool.hatch.envs.changelog]
+skip-install = true
 dependencies = [
   "towncrier",
 ]

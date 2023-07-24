@@ -17,7 +17,6 @@ which can be used to implement plugins for the
 Open Source software: [Apache License 2.0](https://spdx.org/licenses/Apache-2.0.html)
 
 ## &nbsp;
-
 <!-- fancy-readme start -->
 
 Jinjanator can be extended through the use of plugins; these are
