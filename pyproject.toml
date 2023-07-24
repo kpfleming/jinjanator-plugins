@@ -50,7 +50,7 @@ draft = [
   "towncrier build --version main --draft",
 ]
 release = [
-  "towncrier build --version {args}",
+  "towncrier build --yes --version {args}",
 ]
 
 [tool.hatch.version]
