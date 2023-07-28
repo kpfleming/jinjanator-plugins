@@ -15,7 +15,7 @@ The **third number** is when we need to start branches for older
 releases (only for emergencies).
 
 Committed changes for the next release can be found in the ["changelog.d"
-directory](https://github.com/kpfleming/jinjanator/tree/main/changelog.d)
+directory](https://github.com/kpfleming/jinjanator-plugins/tree/main/changelog.d)
 in the project repository.
 
 <!--
@@ -23,12 +23,11 @@ Do *NOT* add changelog entries here!
 
 This changelog is managed by towncrier and is compiled at release time.
 
-See https://github.com/kpfleming/jinjanator/blob/main/.github/CONTRIBUTING.md#changelog for details.
+See https://github.com/kpfleming/jinjanator-plugins/blob/main/.github/CONTRIBUTING.md#changelog for details.
 -->
 
 <!-- towncrier release notes start -->
 
-## [23.1.0](https://github.com/kpfleming/jinjanator/tree/23.1.0) - 2023-07-24
+## [23.1.0](https://github.com/kpfleming/jinjanator-plugins/tree/23.1.0) - 2023-07-24
 
 Initial release!
-
