@@ -7,6 +7,9 @@ from typing import Mapping
 from jinjanator_plugins import (
     Filters,
     Format,
+    FormatOptionUnknownError,
+    FormatOptionUnsupportedError,
+    FormatOptionValueError,
     Formats,
     Tests,
     plugin_filters_hook,
@@ -27,7 +30,23 @@ def spam_format(
     data_string: str,  # noqa: ARG001
     options: list[str] | None = None,
 ) -> Mapping[str, str]:
-    if options and options[0] == "ham":
+    ham = False
+
+    if options:
+        for option in options:
+            if option == "ham":
+                ham = True
+            elif option == "uns":
+                msg = f"Format option {option} is not supported."
+                raise FormatOptionUnsupportedError(msg)
+            elif option == "val":
+                msg = f"Format option {option} has an invalid value."
+                raise FormatOptionValueError(msg)
+            else:
+                msg = f"Format option {option} is not known"
+                raise FormatOptionUnknownError(msg)
+
+    if ham:
         return {
             "ham": "ham",
             "cheese": "ham and cheese",

@@ -26,6 +26,18 @@ class Format:
     suffixes: list[str]
 
 
+class FormatOptionUnknownError(Exception):
+    pass
+
+
+class FormatOptionUnsupportedError(Exception):
+    pass
+
+
+class FormatOptionValueError(Exception):
+    pass
+
+
 F = TypeVar("F", bound=Callable[..., Any])
 hookspec = cast(Callable[[F], F], pluggy.HookspecMarker("jinjanator"))
 
