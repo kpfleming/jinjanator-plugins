@@ -28,6 +28,21 @@ See https://github.com/kpfleming/jinjanator-plugins/blob/main/.github/CONTRIBUTI
 
 <!-- towncrier release notes start -->
 
+## [23.2.0](https://github.com/kpfleming/jinjanator-plugins/tree/23.2.0) - 2023-07-30
+
+### Additions
+
+- Added hook for plugins to report their identities.
+  [#1](https://github.com/kpfleming/jinjanator-plugins/issues/1)
+- Added three exceptions which Format plugins can raise to indicate problems with options provided to them.
+  [#2](https://github.com/kpfleming/jinjanator-plugins/issues/2)
+
+
+### Changes
+
+- Converted tests to proper unit tests.
+
+
 ## [23.1.0](https://github.com/kpfleming/jinjanator-plugins/tree/23.1.0) - 2023-07-24
 
 Initial release!
