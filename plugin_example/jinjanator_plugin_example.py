@@ -11,9 +11,11 @@ from jinjanator_plugins import (
     FormatOptionUnsupportedError,
     FormatOptionValueError,
     Formats,
+    Identity,
     Tests,
     plugin_filters_hook,
     plugin_formats_hook,
+    plugin_identity_hook,
     plugin_tests_hook,
 )
 
@@ -58,6 +60,11 @@ def spam_format(
         "cheese": "spam and cheese",
         "potatoes": "spam and potatoes",
     }
+
+
+@plugin_identity_hook
+def plugin_identities() -> Identity:
+    return "example"
 
 
 @plugin_filters_hook

@@ -20,6 +20,12 @@ def hook_callers() -> PluginHookCallers:
     return cast(PluginHookCallers, pm.hook)
 
 
+def test_identity(hook_callers) -> None:
+    result = hook_callers.plugin_identities()
+    assert len(result) == 1
+    assert "example" == result[0]
+
+
 def test_filter(hook_callers) -> None:
     result = hook_callers.plugin_filters()
     assert len(result) == 1

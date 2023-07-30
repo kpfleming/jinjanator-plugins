@@ -41,16 +41,22 @@ class FormatOptionValueError(Exception):
 F = TypeVar("F", bound=Callable[..., Any])
 hookspec = cast(Callable[[F], F], pluggy.HookspecMarker("jinjanator"))
 
+Identity: TypeAlias = str
 Formats: TypeAlias = Mapping[str, Format]
 Filters: TypeAlias = Mapping[str, Callable[..., Any]]
 Globals: TypeAlias = Mapping[str, Callable[..., Any]]
 Tests: TypeAlias = Mapping[str, Callable[..., Any]]
 
+PluginIdentityHook: TypeAlias = Callable[[], Identity]
 PluginFormatsHook: TypeAlias = Callable[[], Formats]
 PluginFiltersHook: TypeAlias = Callable[[], Filters]
 PluginTestsHook: TypeAlias = Callable[[], Tests]
 PluginGlobalsHook: TypeAlias = Callable[[], Globals]
 
+plugin_identity_hook = cast(
+    Callable[[PluginIdentityHook], PluginIdentityHook],
+    pluggy.HookimplMarker("jinjanator"),
+)
 plugin_formats_hook = cast(
     Callable[[PluginFormatsHook], PluginFormatsHook],
     pluggy.HookimplMarker("jinjanator"),
@@ -70,6 +76,11 @@ plugin_globals_hook = cast(
 
 
 class PluginHooks(Protocol):
+    @staticmethod
+    @hookspec
+    def plugin_identities() -> Identity:
+        """Returns identity as string"""
+
     @staticmethod
     @hookspec
     def plugin_formats() -> Formats:
@@ -92,6 +103,10 @@ class PluginHooks(Protocol):
 
 
 class PluginHookCallers(Protocol):
+    @staticmethod
+    def plugin_identities() -> Sequence[Identity]:
+        """Returns list of strings of identities"""
+
     @staticmethod
     def plugin_formats() -> Sequence[Formats]:
         """Returns list of dicts of formats"""
