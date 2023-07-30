@@ -1,10 +1,7 @@
 from __future__ import annotations
 
-from pathlib import Path
-
+import jinjanator_plugin_example as plugin
 import pytest
-
-from jinjanator.cli import render_command
 
 from jinjanator_plugins import (
     FormatOptionUnknownError,
@@ -13,95 +10,37 @@ from jinjanator_plugins import (
 )
 
 
-def test_filter(tmp_path: Path) -> None:
-    template_file = tmp_path / "template.j2"
-    template_file.write_text("{{ name | rot13 }}")
-    data_file = tmp_path / "data.env"
-    data_file.write_text("name=Bart")
-    assert "Oneg" == render_command(
-        Path.cwd(),
-        {},
-        None,
-        ["", str(template_file), str(data_file)],
-    )
+def test_filter() -> None:
+    assert "Oneg" == plugin.rot13_filter("Bart")
 
 
-def test_test(tmp_path: Path) -> None:
-    template_file = tmp_path / "template.j2"
-    template_file.write_text("{% if name is len12 %}pass{% endif %}")
-    data_file = tmp_path / "data.env"
-    data_file.write_text("name=Bartholomew1")
-    assert "pass" == render_command(
-        Path.cwd(),
-        {},
-        None,
-        ["", str(template_file), str(data_file)],
-    )
+def test_test() -> None:
+    assert True is plugin.is_len12_test("Bartholomew1")
+    assert False is plugin.is_len12_test("Bart")
 
 
-def test_format(tmp_path: Path) -> None:
-    template_file = tmp_path / "template.j2"
-    template_file.write_text("{{ cheese }}")
-    data_file = tmp_path / "data.spam"
-    data_file.write_text("")
-    assert "spam and cheese" == render_command(
-        Path.cwd(),
-        {},
-        None,
-        ["", str(template_file), str(data_file)],
-    )
+def test_format() -> None:
+    result = plugin.spam_format("", [])
+    assert "cheese" in result
+    assert "spam and cheese" == result["cheese"]
 
 
-def test_format_option(tmp_path: Path) -> None:
-    template_file = tmp_path / "template.j2"
-    template_file.write_text("{{ cheese }}")
-    data_file = tmp_path / "data.spam"
-    data_file.write_text("")
-    assert "ham and cheese" == render_command(
-        Path.cwd(),
-        {},
-        None,
-        ["", "--format-option", "ham", str(template_file), str(data_file)],
-    )
+def test_format_option() -> None:
+    result = plugin.spam_format("", ["ham"])
+    assert "cheese" in result
+    assert "ham and cheese" == result["cheese"]
 
 
-def test_format_option_unknown(tmp_path: Path) -> None:
-    template_file = tmp_path / "template.j2"
-    template_file.write_text("{{ cheese }}")
-    data_file = tmp_path / "data.spam"
-    data_file.write_text("")
+def test_format_option_unknown() -> None:
     with pytest.raises(FormatOptionUnknownError):
-        render_command(
-            Path.cwd(),
-            {},
-            None,
-            ["", "--format-option", "unk", str(template_file), str(data_file)],
-        )
+        plugin.spam_format("", ["unk"])
 
 
-def test_format_option_unsupported(tmp_path: Path) -> None:
-    template_file = tmp_path / "template.j2"
-    template_file.write_text("{{ cheese }}")
-    data_file = tmp_path / "data.spam"
-    data_file.write_text("")
+def test_format_option_unsupported() -> None:
     with pytest.raises(FormatOptionUnsupportedError):
-        render_command(
-            Path.cwd(),
-            {},
-            None,
-            ["", "--format-option", "uns", str(template_file), str(data_file)],
-        )
+        plugin.spam_format("", ["uns"])
 
 
-def test_format_option_value(tmp_path: Path) -> None:
-    template_file = tmp_path / "template.j2"
-    template_file.write_text("{{ cheese }}")
-    data_file = tmp_path / "data.spam"
-    data_file.write_text("")
+def test_format_option_value() -> None:
     with pytest.raises(FormatOptionValueError):
-        render_command(
-            Path.cwd(),
-            {},
-            None,
-            ["", "--format-option", "val", str(template_file), str(data_file)],
-        )
+        plugin.spam_format("", ["val"])

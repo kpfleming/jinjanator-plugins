@@ -105,7 +105,6 @@ lint-action = [
 [tool.hatch.envs.ci]
 dependencies = [
     "coverage[toml]",
-    "jinjanator",
     "pytest",
     "pytest-cov",
     "pytest-icdiff",
