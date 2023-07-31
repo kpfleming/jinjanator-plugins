@@ -39,14 +39,11 @@ def spam_format(
             if option == "ham":
                 ham = True
             elif option == "uns":
-                msg = f"Format option {option} is not supported."
-                raise FormatOptionUnsupportedError(msg)
+                raise FormatOptionUnsupportedError(option)
             elif option == "val":
-                msg = f"Format option {option} has an invalid value."
-                raise FormatOptionValueError(msg)
+                raise FormatOptionValueError(option)
             else:
-                msg = f"Format option {option} is not known"
-                raise FormatOptionUnknownError(msg)
+                raise FormatOptionUnknownError(option)
 
     if ham:
         return {
