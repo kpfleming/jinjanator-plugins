@@ -28,6 +28,13 @@ See https://github.com/kpfleming/jinjanator-plugins/blob/main/.github/CONTRIBUTI
 
 <!-- towncrier release notes start -->
 
+## [23.2.1](https://github.com/kpfleming/jinjanator-plugins/tree/23.2.1) - 2023-07-31
+
+### Additions
+
+- Add documentation for features added in version 23.2.0.
+
+
 ## [23.2.0](https://github.com/kpfleming/jinjanator-plugins/tree/23.2.0) - 2023-07-30
 
 ### Additions
