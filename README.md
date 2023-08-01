@@ -124,7 +124,6 @@ find the plugin's hooks (and must match the name specified in the
 import codecs
 
 from jinjanator_plugins import (
-    Format,
     FormatOptionUnknownError,
     FormatOptionUnsupportedError,
     FormatOptionValueError,
@@ -144,16 +143,20 @@ def is_len12_test(value):
 
 
 class SpamFormat:
-    @staticmethod
-    def parser(data_string, options):
-        ham = False
+    name = "spam"
+    suffixes = (".spam",)
+    option_names = ("ham",)
+
+    def __init__(self, options):
+        self.ham = False
 
         if options:
             for option in options:
                 if option == "ham":
-                    ham = True
+                    self.ham = True
 
-        if ham:
+    def parse(self, data_string):
+        if self.ham:
             return {
                 "ham": "ham",
                 "cheese": "ham and cheese",
@@ -165,8 +168,6 @@ class SpamFormat:
             "cheese": "spam and cheese",
             "potatoes": "spam and potatoes",
         }
-
-    fmt = Format(name="spam", parser=parser, suffixes=[".spam"], options=["ham"])
 
 
 @plugin_identity_hook
@@ -186,7 +187,7 @@ def plugin_tests():
 
 @plugin_formats_hook
 def plugin_formats():
-    return {SpamFormat.fmt.name: SpamFormat.fmt}
+    return {SpamFormat.name: SpamFormat}
 ```
 
 Note that the real example makes use of type annotations, but they
@@ -217,9 +218,9 @@ provided (which Jinjanator would have read from a data file), and
 instead returns one of two canned responses based on whether the `ham`
 option has been provided by the user.
 
-The `parser` static method is the function which does the work, and
-the `fmt` class variable is a `Format` object providing the details of
-the format.
+The `parse` method is the function which does the work; the `__init__`
+method handles options provided by the user; the class attributes
+provide details of the format.
 
 #### plugin_identities
 
@@ -278,24 +279,42 @@ found.
 
 The function must return a dictionary, with each key being a format
 function name (the name which will be used in the `--format` argument
-to Jinjanator, if needed) and the corresponding value being a Format
-object. That object contains the name of the format (for use in error
-messages), a reference to the format parser function, a (possibly
-empty) list of file suffixes which can be matched to this format
-during format auto-detection, and a (possibly empty) list of options
-which the user can provide to modify the parser's behavior.
+to Jinjanator, if needed) and the corresponding value being a class
+which implements the requirements of the `Format` protocol (defined in
+[__init__.py](src/jinjanator-plugins/__init__.py)).
 
-Note that the function *must* be named `plugin_formats`; it is the
+In particular these requirements include:
+
+* a class attribute called `name` which contains the name of the
+  format (for use in error messages)
+
+* a class attribute called 'suffixes' which contains a (possibly
+  empty) list of file suffixes which can be matched to this format
+  during format auto-detection
+
+* a class attribute called 'option_names' which contains a (possibly
+  empty) list of options which the user can provide to modify the
+  parser's behavior
+
+* a constructor method (`__init__`) which accepts a (possibly empty)
+  list of options provided by the user, and performs any validation
+  needed on them, storing the results in the `self` object
+
+* a `parse` method which accepts a (possibly empty) string containing
+  the input data, and parses it according to the format's needs, using
+  any previously-validated options stored in the `self` object
+
+Note that the hook function *must* be named `plugin_formats`; it is the
 second part of the 'magic' mechanism mentioned above.
 
-Format functions can accept 'options' to modify their behavior, and
+Format classes can accept 'options' to modify their behavior, and
 should raise the exceptions listed below, when needed, to inform the
 user if one of the provided options does not meet the format's
 requirements.
 
 * `FormatOptionUnknownError` will be raised automatically by the
-  Jinjanator CLI based on the content of the `options` attribute of
-  the `Format` object.
+  Jinjanator CLI based on the content of the `option_names` attribute of
+  the format class.
 
 * `FormatOptionUnsupportedError` should be raised when a provided
   option is not supported in combination with the other provided

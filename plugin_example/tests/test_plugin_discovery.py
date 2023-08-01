@@ -21,30 +21,59 @@ def hook_callers() -> PluginHookCallers:
 
 
 def test_identity(hook_callers: PluginHookCallers) -> None:
-    result = hook_callers.plugin_identities()
-    assert len(result) == 1
-    assert "example" == result[0]
+    result = iter(hook_callers.plugin_identities())
+
+    _identity = next(result)
+    with pytest.raises(StopIteration):
+        next(result)
+
+    assert "example" == _identity
 
 
 def test_filter(hook_callers: PluginHookCallers) -> None:
-    result = hook_callers.plugin_filters()
-    assert len(result) == 1
-    assert "rot13" in result[0]
-    assert plugin.rot13_filter == result[0]["rot13"]
+    result = iter(hook_callers.plugin_filters())
+
+    filters = next(result)
+    with pytest.raises(StopIteration):
+        next(result)
+
+    assert "rot13" in filters
+    assert 1 == len(filters.keys())
 
 
 def test_test(hook_callers: PluginHookCallers) -> None:
-    result = hook_callers.plugin_tests()
-    assert len(result) == 1
-    assert "len12" in result[0]
-    assert plugin.is_len12_test == result[0]["len12"]
+    result = iter(hook_callers.plugin_tests())
+
+    tests = next(result)
+    with pytest.raises(StopIteration):
+        next(result)
+
+    assert "len12" in tests
+    assert 1 == len(tests.keys())
 
 
 def test_format(hook_callers: PluginHookCallers) -> None:
-    result = hook_callers.plugin_formats()
-    assert len(result) == 1
-    assert "spam" in result[0]
-    assert len(result[0]["spam"].suffixes) == 1
-    assert ".spam" == result[0]["spam"].suffixes[0]
-    assert len(result[0]["spam"].options) == 1
-    assert "ham" == result[0]["spam"].options[0]
+    result = iter(hook_callers.plugin_formats())
+
+    fmts = next(result)
+    with pytest.raises(StopIteration):
+        next(result)
+
+    assert "spam" in fmts
+    _fmt = fmts["spam"]
+
+    assert _fmt.suffixes is not None
+    suffixes = iter(_fmt.suffixes)
+    _suffix = next(suffixes)
+    with pytest.raises(StopIteration):
+        next(suffixes)
+
+    assert ".spam" == _suffix
+
+    assert _fmt.option_names is not None
+    option_names = iter(_fmt.option_names)
+    _option = next(option_names)
+    with pytest.raises(StopIteration):
+        next(option_names)
+
+    assert "ham" == _option

@@ -127,10 +127,8 @@ python = [
 ci = [
     "pip install ./plugin_example",
     "rm -f .coverage",
-    # run tests
-    "pytest --verbose --cov-append  --cov-branch --cov-fail-under=100 --cov=jinjanator_plugins",
-    # produce a coverage report with 'missing' lines indicated
-    "coverage report -m",
+    "pytest --verbose --cov-append  --cov-branch --cov=jinjanator_plugins",
+    "coverage report --show-missing --fail-under=100",
 ]
 
 [tool.hatch.metadata.hooks.fancy-pypi-readme]
@@ -243,6 +241,7 @@ warn_no_return = true
 warn_redundant_casts = true
 warn_return_any = true
 warn_unused_ignores = true
+exclude = ['plugin_example/build']
 
 [tool.towncrier]
 name = "jinjanator-plugins"

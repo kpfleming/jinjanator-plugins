@@ -4,40 +4,43 @@ from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
+    Iterable,
     Mapping,
     Protocol,
-    Sequence,
+    Type,
     TypeVar,
     cast,
 )
 
 import pluggy  # type: ignore[import]
 
-from attrs import define
-
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing_extensions import TypeAlias
 
 
-@define(kw_only=True)
-class Format:
+class Format(Protocol):
     name: str
-    parser: Callable[[str, list[str] | None], Mapping[str, Any]]
-    suffixes: list[str]
-    options: list[str]
+    suffixes: Iterable[str] | None
+    option_names: Iterable[str] | None
+
+    def __init__(self, options: Iterable[str] | None) -> None:
+        ...  # pragma: no cover
+
+    def parse(self, data_string: str) -> Mapping[str, Any]:
+        ...  # pragma: no cover
 
 
 class FormatOptionUnknownError(Exception):
-    def __init__(self, fmt: Format, option: str):
+    def __init__(self, fmt: type[Format] | Format, option: str):
         self.fmt = fmt
         self.option = option
 
     def __str__(self) -> str:
-        if len(self.fmt.options) > 0:
+        if self.fmt.option_names:
             return (
                 f"Format {self.fmt.name}: option '{self.option}' is not valid; valid"
-                f" options are '{', '.join(self.fmt.options)}'"
+                f" options are '{', '.join(self.fmt.option_names)}'"
             )
 
         return (
@@ -47,7 +50,7 @@ class FormatOptionUnknownError(Exception):
 
 
 class FormatOptionUnsupportedError(Exception):
-    def __init__(self, fmt: Format, option: str, message: str):
+    def __init__(self, fmt: type[Format] | Format, option: str, message: str):
         self.fmt = fmt
         self.option = option
         self.message = message
@@ -57,7 +60,7 @@ class FormatOptionUnsupportedError(Exception):
 
 
 class FormatOptionValueError(Exception):
-    def __init__(self, fmt: Format, option: str, value: str, message: str):
+    def __init__(self, fmt: type[Format] | Format, option: str, value: str, message: str):
         self.fmt = fmt
         self.option = option
         self.message = message
@@ -74,7 +77,7 @@ F = TypeVar("F", bound=Callable[..., Any])
 hookspec = cast(Callable[[F], F], pluggy.HookspecMarker("jinjanator"))
 
 Identity: TypeAlias = str
-Formats: TypeAlias = Mapping[str, Format]
+Formats: TypeAlias = Mapping[str, Type[Format]]
 Filters: TypeAlias = Mapping[str, Callable[..., Any]]
 Globals: TypeAlias = Mapping[str, Callable[..., Any]]
 Tests: TypeAlias = Mapping[str, Callable[..., Any]]
@@ -136,21 +139,21 @@ class PluginHooks(Protocol):
 
 class PluginHookCallers(Protocol):
     @staticmethod
-    def plugin_identities() -> Sequence[Identity]:
-        """Returns list of strings of identities"""
+    def plugin_identities() -> Iterable[Identity]:
+        """Returns iterable of strings of identities"""
 
     @staticmethod
-    def plugin_formats() -> Sequence[Formats]:
-        """Returns list of dicts of formats"""
+    def plugin_formats() -> Iterable[Formats]:
+        """Returns iterable of dicts of formats"""
 
     @staticmethod
-    def plugin_filters() -> Sequence[Filters]:
-        """Returns list of dicts of filter functions"""
+    def plugin_filters() -> Iterable[Filters]:
+        """Returns iterable of dicts of filter functions"""
 
     @staticmethod
-    def plugin_globals() -> Sequence[Globals]:
-        """Returns list of dicts of global functions"""
+    def plugin_globals() -> Iterable[Globals]:
+        """Returns iterable of dicts of global functions"""
 
     @staticmethod
-    def plugin_tests() -> Sequence[Tests]:
-        """Returns list of dicts of test functions"""
+    def plugin_tests() -> Iterable[Tests]:
+        """Returns iterable of dicts of test functions"""

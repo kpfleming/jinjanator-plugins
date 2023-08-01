@@ -2,11 +2,10 @@ from __future__ import annotations
 
 import codecs
 
-from typing import Mapping
+from typing import Iterable, Mapping
 
 from jinjanator_plugins import (
     Filters,
-    Format,
     FormatOptionUnknownError,
     FormatOptionUnsupportedError,
     FormatOptionValueError,
@@ -29,29 +28,29 @@ def is_len12_test(value: str) -> bool:
 
 
 class SpamFormat:
-    @staticmethod
-    def parser(
-        data_string: str,  # noqa: ARG004
-        options: list[str] | None = None,
-    ) -> Mapping[str, str]:
-        ham = False
+    name = "spam"
+    suffixes: Iterable[str] | None = (".spam",)
+    option_names: Iterable[str] | None = ("ham",)
+
+    def __init__(self, options: Iterable[str] | None) -> None:
+        self.ham = False
 
         if options:
             for option in options:
                 if option == "ham":
-                    ham = True
+                    self.ham = True
                 elif option == "uns":
-                    raise FormatOptionUnsupportedError(
-                        SpamFormat.fmt, option, "is not supported"
-                    )
+                    raise FormatOptionUnsupportedError(self, option, "is not supported")
                 elif option == "val":
-                    raise FormatOptionValueError(
-                        SpamFormat.fmt, option, "", "is not valid"
-                    )
+                    raise FormatOptionValueError(self, option, "", "is not valid")
                 else:
-                    raise FormatOptionUnknownError(SpamFormat.fmt, option)
+                    raise FormatOptionUnknownError(self, option)
 
-        if ham:
+    def parse(
+        self,
+        data_string: str,  # noqa: ARG002
+    ) -> Mapping[str, str]:
+        if self.ham:
             return {
                 "ham": "ham",
                 "cheese": "ham and cheese",
@@ -63,8 +62,6 @@ class SpamFormat:
             "cheese": "spam and cheese",
             "potatoes": "spam and potatoes",
         }
-
-    fmt = Format(name="spam", parser=parser, suffixes=[".spam"], options=["ham"])
 
 
 @plugin_identity_hook
@@ -84,4 +81,4 @@ def plugin_tests() -> Tests:
 
 @plugin_formats_hook
 def plugin_formats() -> Formats:
-    return {f.name: f for f in [SpamFormat.fmt]}
+    return {SpamFormat.name: SpamFormat}
