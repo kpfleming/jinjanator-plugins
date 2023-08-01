@@ -138,7 +138,7 @@ content-type = "text/markdown"
 
 [[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
 text = """
-# *jinjanator-plugins*: An API package for Jinjanator plugins
+# *jinjanator-plugins*: API package for Jinjanator plugins
 
 """
 
