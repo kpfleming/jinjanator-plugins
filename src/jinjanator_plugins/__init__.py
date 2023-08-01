@@ -22,20 +22,52 @@ if TYPE_CHECKING:  # pragma: no cover
 
 @define(kw_only=True)
 class Format:
+    name: str
     parser: Callable[[str, list[str] | None], Mapping[str, Any]]
     suffixes: list[str]
+    options: list[str]
 
 
 class FormatOptionUnknownError(Exception):
-    pass
+    def __init__(self, fmt: Format, option: str):
+        self.fmt = fmt
+        self.option = option
+
+    def __str__(self) -> str:
+        if len(self.fmt.options) > 0:
+            return (
+                f"Format {self.fmt.name}: option '{self.option}' is not valid; valid"
+                f" options are '{', '.join(self.fmt.options)}'"
+            )
+
+        return (
+            f"Format {self.fmt.name}: option '{self.option}' is not valid; this format"
+            " does not accept any options."
+        )
 
 
 class FormatOptionUnsupportedError(Exception):
-    pass
+    def __init__(self, fmt: Format, option: str, message: str):
+        self.fmt = fmt
+        self.option = option
+        self.message = message
+
+    def __str__(self) -> str:
+        return f"Format {self.fmt.name}: option '{self.option}' {self.message}."
 
 
 class FormatOptionValueError(Exception):
-    pass
+    def __init__(self, fmt: Format, option: str, value: str, message: str):
+        self.fmt = fmt
+        self.option = option
+        self.message = message
+        self.value = value
+
+    def __str__(self) -> str:
+        return (
+            f"Format {self.fmt.name}: option '{self.option}' value '{self.value}'"
+            f" {self.message}."
+        )
 
 
 F = TypeVar("F", bound=Callable[..., Any])

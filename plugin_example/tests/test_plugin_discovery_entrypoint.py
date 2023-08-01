@@ -44,6 +44,7 @@ def test_format(hook_callers) -> None:
     result = hook_callers.plugin_formats()
     assert len(result) == 1
     assert "spam" in result[0]
-    assert plugin.spam_format == result[0]["spam"].parser
     assert len(result[0]["spam"].suffixes) == 1
     assert ".spam" == result[0]["spam"].suffixes[0]
+    assert len(result[0]["spam"].options) == 1
+    assert "ham" == result[0]["spam"].options[0]

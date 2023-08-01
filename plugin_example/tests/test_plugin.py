@@ -20,27 +20,27 @@ def test_test() -> None:
 
 
 def test_format() -> None:
-    result = plugin.spam_format("", [])
+    result = plugin.SpamFormat.parser("", [])
     assert "cheese" in result
     assert "spam and cheese" == result["cheese"]
 
 
 def test_format_option() -> None:
-    result = plugin.spam_format("", ["ham"])
+    result = plugin.SpamFormat.parser("", ["ham"])
     assert "cheese" in result
     assert "ham and cheese" == result["cheese"]
 
 
 def test_format_option_unknown() -> None:
     with pytest.raises(FormatOptionUnknownError):
-        plugin.spam_format("", ["unk"])
+        plugin.SpamFormat.parser("", ["unk"])
 
 
 def test_format_option_unsupported() -> None:
     with pytest.raises(FormatOptionUnsupportedError):
-        plugin.spam_format("", ["uns"])
+        plugin.SpamFormat.parser("", ["uns"])
 
 
 def test_format_option_value() -> None:
     with pytest.raises(FormatOptionValueError):
-        plugin.spam_format("", ["val"])
+        plugin.SpamFormat.parser("", ["val"])

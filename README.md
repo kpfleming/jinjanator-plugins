@@ -81,7 +81,7 @@ requires = [
 name = "jinjanator-plugin-example"
 version = "0.0.0"
 dependencies = [
-  "jinjanator-plugins==23.1.0",
+  "jinjanator-plugins==23.3.0",
 ]
 
 [tool.setuptools]
@@ -104,9 +104,9 @@ the plugin. Note the *specific version dependency* on the
 
 #### tool.setuptools
 
-This section tells `setuptools` to include a single source file (not a package
-directory) into the distribution. Note that this is a *module name*,
-not a *file name*, so there is no `.py` extension.
+This section tells `setuptools` to include a single source file (not a
+package directory) into the distribution. Note that this is a *module
+name*, not a *file name*, so there is no `.py` extension.
 
 #### project.entry-points.jinjanator
 
@@ -143,28 +143,30 @@ def is_len12_test(value):
     return len(value) == 12
 
 
-def spam_format(data_string, options):
-    ham = False
+class SpamFormat:
+    @staticmethod
+    def parser(data_string, options):
+        ham = False
 
-    if options:
-        for option in options:
-            if option == "ham":
-                ham = True
-            else:
-                raise FormatOptionUnknownError(option)
+        if options:
+            for option in options:
+                if option == "ham":
+                    ham = True
 
-    if ham:
+        if ham:
+            return {
+                "ham": "ham",
+                "cheese": "ham and cheese",
+                "potatoes": "ham and potatoes",
+            }
+
         return {
-            "ham": "ham",
-            "cheese": "ham and cheese",
-            "potatoes": "ham and potatoes",
+            "spam": "spam",
+            "cheese": "spam and cheese",
+            "potatoes": "spam and potatoes",
         }
 
-    return {
-        "spam": "spam",
-        "cheese": "spam and cheese",
-        "potatoes": "spam and potatoes",
-    }
+    fmt = Format(name="spam", parser=parser, suffixes=[".spam"], options=["ham"])
 
 
 @plugin_identity_hook
@@ -184,7 +186,7 @@ def plugin_tests():
 
 @plugin_formats_hook
 def plugin_formats():
-    return {"spam": Format(parser=spam_format, suffixes=[".spam"])}
+    return {SpamFormat.fmt.name: SpamFormat.fmt}
 ```
 
 Note that the real example makes use of type annotations, but they
@@ -194,7 +196,8 @@ have been removed here for simplicity.
 
 The imports from `jinjanator_plugins` are necessary for the plugin to:
 * Mark the hooks it wishes to use to provide additional features.
-* Construct one (or more) `Format` objects to describe the formats it supports, if any.
+* Construct one (or more) `Format` objects to describe the formats it
+  supports, if any.
 * Raise option-related exceptions from its format function, if any.
 
 #### rot13_filter
@@ -207,12 +210,16 @@ the string value it receives.
 A simple test function which returns `True` if the value it receives
 has length 12.
 
-#### spam_format
+#### SpamFormat
 
-A simple format function which ignores the content provided (which
-Jinjanator would have read from a data file), and instead returns one
-of two canned responses based on whether the `ham` option has been
-provided by the user.
+A class providing a simple format function which ignores the content
+provided (which Jinjanator would have read from a data file), and
+instead returns one of two canned responses based on whether the `ham`
+option has been provided by the user.
+
+The `parser` static method is the function which does the work, and
+the `fmt` class variable is a `Format` object providing the details of
+the format.
 
 #### plugin_identities
 
@@ -272,25 +279,27 @@ found.
 The function must return a dictionary, with each key being a format
 function name (the name which will be used in the `--format` argument
 to Jinjanator, if needed) and the corresponding value being a Format
-object containing a reference to the format function itself and an
-optional list of file suffixes which can be matched to this format
-during format auto-detection.
+object. That object contains the name of the format (for use in error
+messages), a reference to the format parser function, a (possibly
+empty) list of file suffixes which can be matched to this format
+during format auto-detection, and a (possibly empty) list of options
+which the user can provide to modify the parser's behavior.
 
 Note that the function *must* be named `plugin_formats`; it is the
 second part of the 'magic' mechanism mentioned above.
 
 Format functions can accept 'options' to modify their behavior, and
-should raise the exceptions listed below when needed to inform the
+should raise the exceptions listed below, when needed, to inform the
 user if one of the provided options does not meet the format's
 requirements.
 
-* `FormatOptionUnknownError` should be raised when a provided option
-  name is not valid.
+* `FormatOptionUnknownError` will be raised automatically by the
+  Jinjanator CLI based on the content of the `options` attribute of
+  the `Format` object.
 
 * `FormatOptionUnsupportedError` should be raised when a provided
   option is not supported in combination with the other provided
-  options; it should also be raised when options are provided to a
-  format which does not support options.
+  options or with the parsed data.
 
 * `FormatOptionValueError` should be raised when a provided option has
   a value that is not valid.
