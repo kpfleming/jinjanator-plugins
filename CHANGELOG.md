@@ -28,6 +28,13 @@ See https://github.com/kpfleming/jinjanator-plugins/blob/main/.github/CONTRIBUTI
 
 <!-- towncrier release notes start -->
 
+## [23.3.0](https://github.com/kpfleming/jinjanator-plugins/tree/23.3.0) - 2023-08-01
+
+### Changes
+
+- Improved format option exceptions to accept details and messages, and provide their own formatted output.
+
+
 ## [23.2.1](https://github.com/kpfleming/jinjanator-plugins/tree/23.2.1) - 2023-07-31
 
 ### Additions

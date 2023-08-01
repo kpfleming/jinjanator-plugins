@@ -1,1 +1,0 @@
-Improved format option exceptions to accept details and messages, and provide their own formatted output.
