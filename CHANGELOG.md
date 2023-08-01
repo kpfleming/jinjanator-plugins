@@ -28,6 +28,14 @@ See https://github.com/kpfleming/jinjanator-plugins/blob/main/.github/CONTRIBUTI
 
 <!-- towncrier release notes start -->
 
+## [23.4.0](https://github.com/kpfleming/jinjanator-plugins/tree/23.4.0) - 2023-08-01
+
+### Backwards-incompatible Changes
+
+- Major redesign of the 'formats' API; formats are now classes and can store data for their needs.
+  [#4](https://github.com/kpfleming/jinjanator-plugins/issues/4)
+
+
 ## [23.3.0](https://github.com/kpfleming/jinjanator-plugins/tree/23.3.0) - 2023-08-01
 
 ### Changes
