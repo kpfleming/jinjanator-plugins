@@ -92,7 +92,7 @@ lint = [
     "ruff check --fix -- src tests plugin_example",
     "mypy --package jinjanator_plugins",
     "mypy tests",
-    "mypy plugin_example/*.py",
+    "mypy plugin_example",
     "shellcheck workflow-support/*.sh",
 ]
 lint-action = [
@@ -100,7 +100,7 @@ lint-action = [
     "ruff check --format=github -- src tests plugin_example",
     "mypy --package jinjanator_plugins",
     "mypy tests",
-    "mypy plugin_example/*.py",
+    "mypy plugin_example",
     "shellcheck workflow-support/*.sh",
 ]
 
