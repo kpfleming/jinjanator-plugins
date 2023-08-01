@@ -48,9 +48,11 @@ dependencies = [
 
 [tool.hatch.envs.changelog.scripts]
 draft = [
+  "rm -f changelog.d/*~",
   "towncrier build --version main --draft",
 ]
 release = [
+  "rm -f changelog.d/*~",
   "towncrier build --yes --version {args}",
 ]
 
