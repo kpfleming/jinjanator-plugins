@@ -281,7 +281,7 @@ The function must return a dictionary, with each key being a format
 function name (the name which will be used in the `--format` argument
 to Jinjanator, if needed) and the corresponding value being a class
 which implements the requirements of the `Format` protocol (defined in
-[__init__.py](src/jinjanator-plugins/__init__.py)).
+[__init__.py](src/jinjanator_plugins/__init__.py)).
 
 In particular these requirements include:
 
