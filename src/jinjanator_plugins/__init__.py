@@ -12,7 +12,7 @@ from typing import (
     cast,
 )
 
-import pluggy  # type: ignore[import]
+import pluggy
 
 
 if TYPE_CHECKING:  # pragma: no cover
