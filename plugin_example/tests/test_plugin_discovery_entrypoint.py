@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import cast
 
-import pluggy  # type: ignore[import]
+import pluggy
 import pytest
 
 from jinjanator_plugins import (
