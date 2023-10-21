@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import jinjanator_plugin_example as plugin  # type: ignore[import]
+import jinjanator_plugin_example as plugin  # type: ignore[import-not-found]
 import pytest
 
 from jinjanator_plugins import (
