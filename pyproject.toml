@@ -83,8 +83,7 @@ python = "3.12"
 
 [tool.hatch.envs.lint]
 dependencies = [
-    "black",
-    "ruff",
+    "ruff>=0.1.3",
     "mypy",
     "pyproject-fmt",
     "pytest", # needed for type-checking plugin_example
@@ -92,8 +91,8 @@ dependencies = [
 
 [tool.hatch.envs.lint.scripts]
 lint = [
-    "ruff check --fix --show-fixes .",
-    "black --preview .",
+    "ruff format .",
+    "ruff check --output-format=grouped --fix --show-source --show-fixes .",
     "mypy --package jinjanator_plugins",
     "mypy tests",
     "mypy plugin_example",
@@ -101,8 +100,8 @@ lint = [
     "pyproject-fmt pyproject.toml plugin_example/pyproject.toml",
 ]
 lint-action = [
+    "ruff format --check --diff .",
     "ruff check --output-format=github .",
-    "black --check --diff --preview .",
     "mypy --package jinjanator_plugins",
     "mypy tests",
     "mypy plugin_example",
@@ -173,28 +172,26 @@ replacement = '[\1](https://github.com/kpfleming/jinjanator-plugins/tree/main/\g
 pattern = "#(\\d+)"
 replacement = "[#\\1](https://github.com/kpfleming/jinjanator-plugins/issues/\\1)"
 
-[tool.black]
-line-length = 90
-target-version = ["py38"]
-
 [tool.ruff]
 src = ["src"]
-output-format = "grouped"
-target-version = "py38"
+ignore-init-module-imports = true
+line-length = 100
+
+[tool.ruff.lint]
 select = ["ALL"]
 
 ignore = [
   "ANN",      # Mypy is better at this.
+  "COM812",   # conflicts with formatter
   "C901",     # Leave complexity to me.
-  "COM",      # Leave commas to Black.
   "D",        # We have different ideas about docstrings.
-  "E501",     # leave line-length enforcement to Black
+  "ISC001",   # conflicts with formatter
   "PLR0912",  # Leave complexity to me.
   "TRY301",   # Raise in try blocks can totally make sense.
 ]
 unfixable = ["F401"]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "tests/*" = [
   "INP001",  # we don't care that these are in implicit namespace packages
   "PLC1901", # empty strings are falsey, but are less specific in tests

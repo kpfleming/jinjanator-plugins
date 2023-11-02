@@ -24,9 +24,11 @@ class Format(Protocol):
     suffixes: Iterable[str] | None
     option_names: Iterable[str] | None
 
-    def __init__(self, options: Iterable[str] | None) -> None: ...  # pragma: no cover
+    def __init__(self, options: Iterable[str] | None) -> None:
+        ...  # pragma: no cover
 
-    def parse(self, data_string: str) -> Mapping[str, Any]: ...  # pragma: no cover
+    def parse(self, data_string: str) -> Mapping[str, Any]:
+        ...  # pragma: no cover
 
 
 class FormatOptionUnknownError(Exception):
