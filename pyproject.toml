@@ -83,7 +83,7 @@ python = "3.12"
 
 [tool.hatch.envs.lint]
 dependencies = [
-    "ruff>=0.1.3",
+    "ruff>=0.2.0",
     "mypy",
     "pyproject-fmt",
     "pytest", # needed for type-checking plugin_example
@@ -91,8 +91,8 @@ dependencies = [
 
 [tool.hatch.envs.lint.scripts]
 lint = [
-    "ruff format .",
-    "ruff check --output-format=grouped --fix --show-source --show-fixes .",
+    "ruff format",
+    "ruff check --output-format=full --fix --show-fixes",
     "mypy --package jinjanator_plugins",
     "mypy tests",
     "mypy plugin_example",
@@ -100,8 +100,8 @@ lint = [
     "pyproject-fmt pyproject.toml plugin_example/pyproject.toml",
 ]
 lint-action = [
-    "ruff format --check --diff .",
-    "ruff check --output-format=github .",
+    "ruff format --check --diff",
+    "ruff check --output-format=github",
     "mypy --package jinjanator_plugins",
     "mypy tests",
     "mypy plugin_example",
@@ -174,10 +174,10 @@ replacement = "[#\\1](https://github.com/kpfleming/jinjanator-plugins/issues/\\1
 
 [tool.ruff]
 src = ["src"]
-ignore-init-module-imports = true
 line-length = 100
 
 [tool.ruff.lint]
+ignore-init-module-imports = true
 select = ["ALL"]
 
 ignore = [
@@ -209,7 +209,7 @@ unfixable = ["F401"]
   "SIM300",  # Yoda rocks in tests
 ]
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 lines-between-types = 1
 lines-after-imports = 2
 
