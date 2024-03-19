@@ -79,12 +79,14 @@ Formats: TypeAlias = Mapping[str, Type[Format]]
 Filters: TypeAlias = Mapping[str, Callable[..., Any]]
 Globals: TypeAlias = Mapping[str, Callable[..., Any]]
 Tests: TypeAlias = Mapping[str, Callable[..., Any]]
+Extensions: TypeAlias = Iterable[str]
 
 PluginIdentityHook: TypeAlias = Callable[[], Identity]
 PluginFormatsHook: TypeAlias = Callable[[], Formats]
 PluginFiltersHook: TypeAlias = Callable[[], Filters]
 PluginTestsHook: TypeAlias = Callable[[], Tests]
 PluginGlobalsHook: TypeAlias = Callable[[], Globals]
+PluginExtensionsHook: TypeAlias = Callable[[], Extensions]
 
 plugin_identity_hook = cast(
     Callable[[PluginIdentityHook], PluginIdentityHook],
@@ -104,6 +106,10 @@ plugin_tests_hook = cast(
 )
 plugin_globals_hook = cast(
     Callable[[PluginGlobalsHook], PluginGlobalsHook],
+    pluggy.HookimplMarker("jinjanator"),
+)
+plugin_extensions_hook = cast(
+    Callable[[PluginExtensionsHook], PluginExtensionsHook],
     pluggy.HookimplMarker("jinjanator"),
 )
 
@@ -134,6 +140,11 @@ class PluginHooks(Protocol):
     def plugin_tests() -> Tests:
         """Returns dict of test functions"""
 
+    @staticmethod
+    @hookspec
+    def plugin_extensions() -> Extensions:
+        """Returns list of extensions to add to Jinja2"""
+
 
 class PluginHookCallers(Protocol):
     @staticmethod
@@ -155,3 +166,7 @@ class PluginHookCallers(Protocol):
     @staticmethod
     def plugin_tests() -> Iterable[Tests]:
         """Returns iterable of dicts of test functions"""
+
+    @staticmethod
+    def plugin_extensions() -> Iterable[Extensions]:
+        """Returns iterable of list of extensions to add to Jinja2"""

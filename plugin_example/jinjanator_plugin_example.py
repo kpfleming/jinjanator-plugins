@@ -5,6 +5,7 @@ import codecs
 from typing import Iterable, Mapping
 
 from jinjanator_plugins import (
+    Extensions,
     Filters,
     FormatOptionUnknownError,
     FormatOptionUnsupportedError,
@@ -12,6 +13,7 @@ from jinjanator_plugins import (
     Formats,
     Identity,
     Tests,
+    plugin_extensions_hook,
     plugin_filters_hook,
     plugin_formats_hook,
     plugin_identity_hook,
@@ -82,3 +84,8 @@ def plugin_tests() -> Tests:
 @plugin_formats_hook
 def plugin_formats() -> Formats:
     return {SpamFormat.name: SpamFormat}
+
+
+@plugin_extensions_hook
+def plugin_extensions() -> Extensions:
+    return ["jinja2.ext.debug"]

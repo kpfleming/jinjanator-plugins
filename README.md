@@ -42,8 +42,11 @@ Plugins can provide:
 * *globals*: functions used in Jinja2 templates to obtain data from
   external sources.
 
+* *extensions*: Jinja2 extensions that can add extra filters, tests,
+  globals or even extend the parser.
+
 For more details on the functionality and requirements for 'filters',
-'tests', and 'globals', refer to the Jinja2 documentation.
+'tests', 'globals', and 'extensions', refer to the Jinja2 documentation.
 
 ## Installation
 
@@ -131,6 +134,7 @@ from jinjanator_plugins import (
     plugin_formats_hook,
     plugin_identity_hook,
     plugin_tests_hook,
+    plugin_extensions_hook,
 )
 
 
@@ -188,6 +192,11 @@ def plugin_tests():
 @plugin_formats_hook
 def plugin_formats():
     return {SpamFormat.name: SpamFormat}
+
+
+@plugin_extensions_hook
+def plugin_extensions():
+    return ['jinja2.ext.debug']
 ```
 
 Note that the real example makes use of type annotations, but they
@@ -322,6 +331,28 @@ requirements.
 
 * `FormatOptionValueError` should be raised when a provided option has
   a value that is not valid.
+
+#### plugin_extensions
+
+The hook function which will be called by Jinjanator to allow this
+plugin to register any additional Jinja2 extensions; the
+`@plugin_extensions_hook` decorator marks the function so that it will be
+found.
+
+The function must return a list, with each entry being a string (the name
+of a Jinja2 extension that should be added to the Jinja2 Environment).
+
+Those strings should correspond to extensions that themselves are available
+in your python installation and available for Jinja2 to locate.
+
+Some examples:
+* Jinja2 own debug extension: `jinja2.ext.debug`
+* [Jinja-Markdown](https://github.com/jpsca/jinja-markdown): `jinja_markdown.MarkdownExtension`
+* [jinja-markdown2](https://github.com/mkbabb/jinja-markdown2): `jinja2_markdown.MarkdownExtension`
+* https://github.com/topics/jinja2-extension etc...
+
+Note that the function *must* be named `plugin_extensions`; it is the
+second part of the 'magic' mechanism mentioned above.
 <!-- fancy-readme end -->
 
 ## Chat
