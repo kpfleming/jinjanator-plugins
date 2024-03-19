@@ -28,6 +28,13 @@ See https://github.com/kpfleming/jinjanator-plugins/blob/main/.github/CONTRIBUTI
 
 <!-- towncrier release notes start -->
 
+## [24.1.0](https://github.com/kpfleming/jinjanator-plugins/tree/24.1.0) - 2024-03-19
+
+### Additions
+
+- Support for 'extensions' plugins which enable Jinja2 extensions (contributed by @llange)
+  [#14](https://github.com/kpfleming/jinjanator-plugins/issues/14)
+
 ## [23.5.0](https://github.com/kpfleming/jinjanator-plugins/tree/23.5.0) - 2023-10-07
 
 ### Additions
