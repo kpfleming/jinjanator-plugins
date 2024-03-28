@@ -12,14 +12,14 @@
 
 This repo contains `jinjanator-plugins`, a set of types and decorators
 which can be used to implement plugins for the
-[Jinjanator](https://github.com/kpfleming/jinjanator) tool.
+[jinjanator](https://github.com/kpfleming/jinjanator) tool.
 
 Open Source software: [Apache License 2.0](https://spdx.org/licenses/Apache-2.0.html)
 
 ## &nbsp;
 <!-- fancy-readme start -->
 
-Jinjanator can be extended through the use of plugins; these are
+jinjanator can be extended through the use of plugins; these are
 Python packages installed into the same environment as the tool
 itself, which use special markers to 'hook' into various
 features. There is a minimal example in the
@@ -69,7 +69,7 @@ A minimal plugin consists of two files:
   build instructions
 
 * Python source: provides functions to implement the desired features,
-  and hook markers to plug them into Jinjanator
+  and hook markers to plug them into jinjanator
 
 ### pyproject.toml
 
@@ -114,10 +114,10 @@ name*, not a *file name*, so there is no `.py` extension.
 #### project.entry-points.jinjanator
 
 This is the first part of the 'magic' mechanism which allows
-Jinjanator to find the plugin. The entry here (which can use any name,
+jinjanator to find the plugin. The entry here (which can use any name,
 but should be related to the project name in order to avoid conflicts)
-creates an 'entry point' which Jinjanator can use to find the plugin;
-the value is the name of the module which Jinjanator should import to
+creates an 'entry point' which jinjanator can use to find the plugin;
+the value is the name of the module which jinjanator should import to
 find the plugin's hooks (and must match the name specified in the
 `tool.setuptools` section).
 
@@ -223,7 +223,7 @@ has length 12.
 #### SpamFormat
 
 A class providing a simple format function which ignores the content
-provided (which Jinjanator would have read from a data file), and
+provided (which jinjanator would have read from a data file), and
 instead returns one of two canned responses based on whether the `ham`
 option has been provided by the user.
 
@@ -233,7 +233,7 @@ provide details of the format.
 
 #### plugin_identities
 
-The hook function which will be called by Jinjanator to allow this
+The hook function which will be called by jinjanator to allow this
 plugin to identify itself; the `@plugin_identities_hook` decorator
 marks the function so that it will be found.
 
@@ -251,7 +251,7 @@ second part of the 'magic' mechanism mentioned above.
 
 #### plugin_filters
 
-The hook function which will be called by Jinjanator to allow this
+The hook function which will be called by jinjanator to allow this
 plugin to register any filter functions it provides; the
 `@plugin_filters_hook` decorator marks the function so that it will be
 found.
@@ -266,7 +266,7 @@ second part of the 'magic' mechanism mentioned above.
 
 #### plugin_tests
 
-The hook function which will be called by Jinjanator to allow this
+The hook function which will be called by jinjanator to allow this
 plugin to register any test functions it provides; the
 `@plugin_tests_hook` decorator marks the function so that it will be
 found.
@@ -281,14 +281,14 @@ second part of the 'magic' mechanism mentioned above.
 
 #### plugin_formats
 
-The hook function which will be called by Jinjanator to allow this
+The hook function which will be called by jinjanator to allow this
 plugin to register any format functions it provides; the
 `@plugin_formats_hook` decorator marks the function so that it will be
 found.
 
 The function must return a dictionary, with each key being a format
 function name (the name which will be used in the `--format` argument
-to Jinjanator, if needed) and the corresponding value being a class
+to jinjanator, if needed) and the corresponding value being a class
 which implements the requirements of the `Format` protocol (defined in
 [__init__.py](src/jinjanator_plugins/__init__.py)).
 
@@ -322,7 +322,7 @@ user if one of the provided options does not meet the format's
 requirements.
 
 * `FormatOptionUnknownError` will be raised automatically by the
-  Jinjanator CLI based on the content of the `option_names` attribute of
+  jinjanator CLI based on the content of the `option_names` attribute of
   the format class.
 
 * `FormatOptionUnsupportedError` should be raised when a provided
@@ -334,7 +334,7 @@ requirements.
 
 #### plugin_extensions
 
-The hook function which will be called by Jinjanator to allow this
+The hook function which will be called by jinjanator to allow this
 plugin to register any additional Jinja2 extensions; the
 `@plugin_extensions_hook` decorator marks the function so that it will be
 found.
@@ -357,7 +357,7 @@ second part of the 'magic' mechanism mentioned above.
 
 ## Chat
 
-If you'd like to chat with the Jinjanator community, join us on
+If you'd like to chat with the jinjanator community, join us on
 [Matrix](https://matrix.to/#/#jinjanator:km6g.us)!
 
 ## Credits

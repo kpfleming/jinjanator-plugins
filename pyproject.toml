@@ -8,7 +8,7 @@ requires = [
 
 [project]
 name = "jinjanator-plugins"
-description = "Package which provides the plugin API for the Jinjanator tool"
+description = "Package which provides the plugin API for the jinjanator tool"
 license = { text="Apache-2.0" }
 authors = [
   { name="Kevin P. Fleming", email="jinjanator@kevin.km6g.us" },
@@ -139,7 +139,7 @@ content-type = "text/markdown"
 
 [[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
 text = """
-# *jinjanator-plugins*: API package for Jinjanator plugins
+# *jinjanator-plugins*: API package for jinjanator plugins
 
 """
 
