@@ -9,9 +9,9 @@ requires = [
 [project]
 name = "jinjanator-plugins"
 description = "Package which provides the plugin API for the jinjanator tool"
-license = { text="Apache-2.0" }
+license = { text = "Apache-2.0" }
 authors = [
-  { name="Kevin P. Fleming", email="jinjanator@kevin.km6g.us" },
+  { name = "Kevin P. Fleming", email = "jinjanator@kevin.km6g.us" },
 ]
 requires-python = ">=3.8"
 classifiers = [
@@ -37,9 +37,8 @@ dependencies = [
   "attrs",
   "pluggy",
 ]
-[project.urls]
-"Bug Tracker" = "https://github.com/kpfleming/jinjanator-plugins/issues"
-"Homepage" = "https://github.com/kpfleming/jinjanator-plugins"
+urls."Bug Tracker" = "https://github.com/kpfleming/jinjanator-plugins/issues"
+urls."Homepage" = "https://github.com/kpfleming/jinjanator-plugins"
 
 [tool.hatch.envs.changelog]
 skip-install = true
@@ -68,14 +67,14 @@ exclude = [
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "src",
-    "plugin_example",
-    "*.md",
+  "src",
+  "plugin_example",
+  "*.md",
 ]
 
 [tool.hatch.build.targets.wheel]
 packages = [
-    "src/jinjanator_plugins",
+  "src/jinjanator_plugins",
 ]
 
 [tool.hatch.envs.default]
@@ -83,56 +82,56 @@ python = "3.12"
 
 [tool.hatch.envs.lint]
 dependencies = [
-    "ruff>=0.2.0",
-    "mypy",
-    "pyproject-fmt",
-    "pytest", # needed for type-checking plugin_example
+  "ruff>=0.2.0",
+  "mypy",
+  "pyproject-fmt",
+  "pytest",        # needed for type-checking plugin_example
 ]
 
 [tool.hatch.envs.lint.scripts]
 lint = [
-    "ruff format",
-    "ruff check --output-format=full --fix --show-fixes",
-    "mypy --package jinjanator_plugins",
-    "mypy tests",
-    "mypy plugin_example",
-    "shellcheck workflow-support/*.sh",
-    "pyproject-fmt pyproject.toml plugin_example/pyproject.toml",
+  "ruff format",
+  "ruff check --output-format=full --fix --show-fixes",
+  "mypy --package jinjanator_plugins",
+  "mypy tests",
+  "mypy plugin_example",
+  "shellcheck workflow-support/*.sh",
+  "pyproject-fmt pyproject.toml plugin_example/pyproject.toml",
 ]
 lint-action = [
-    "ruff format --check --diff",
-    "ruff check --output-format=github",
-    "mypy --package jinjanator_plugins",
-    "mypy tests",
-    "mypy plugin_example",
-    "shellcheck workflow-support/*.sh",
-    "pyproject-fmt --check pyproject.toml plugin_example/pyproject.toml",
+  "ruff format --check --diff",
+  "ruff check --output-format=github",
+  "mypy --package jinjanator_plugins",
+  "mypy tests",
+  "mypy plugin_example",
+  "shellcheck workflow-support/*.sh",
+  "pyproject-fmt --check pyproject.toml plugin_example/pyproject.toml",
 ]
 
 [tool.hatch.envs.ci]
 dependencies = [
-    "coverage[toml]",
-    "pytest",
-    "pytest-cov",
-    "pytest-icdiff",
+  "coverage[toml]",
+  "pytest",
+  "pytest-cov",
+  "pytest-icdiff",
 ]
 
 [[tool.hatch.envs.ci.matrix]]
 python = [
-"3.8",
-"3.9",
-"3.10",
-"3.11",
-"3.12",
-"3.13",
+  "3.8",
+  "3.9",
+  "3.10",
+  "3.11",
+  "3.12",
+  "3.13",
 ]
 
 [tool.hatch.envs.ci.scripts]
 ci = [
-    "pip install ./plugin_example",
-    "rm -f .coverage",
-    "pytest --verbose --cov-append  --cov-branch --cov=jinjanator_plugins",
-    "coverage report --show-missing --fail-under=100",
+  "pip install ./plugin_example",
+  "rm -f .coverage",
+  "pytest --verbose --cov-append  --cov-branch --cov=jinjanator_plugins",
+  "coverage report --show-missing --fail-under=100",
 ]
 
 [tool.hatch.metadata.hooks.fancy-pypi-readme]
@@ -174,56 +173,56 @@ pattern = "#(\\d+)"
 replacement = "[#\\1](https://github.com/kpfleming/jinjanator-plugins/issues/\\1)"
 
 [tool.ruff]
-src = ["src"]
 line-length = 100
 
-[tool.ruff.lint]
-ignore-init-module-imports = true
-select = ["ALL"]
-
-ignore = [
-  "ANN",      # Mypy is better at this.
-  "COM812",   # conflicts with formatter
-  "C901",     # Leave complexity to me.
-  "D",        # We have different ideas about docstrings.
-  "ISC001",   # conflicts with formatter
-  "PLR0912",  # Leave complexity to me.
-  "TRY301",   # Raise in try blocks can totally make sense.
+src = [
+  "src",
 ]
-unfixable = ["F401"]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/*" = [
+lint.select = [
+  "ALL",
+]
+lint.per-file-ignores."plugin_example/*" = [
+  "INP001", # we don't care that these are in implicit namespace packages
+]
+lint.per-file-ignores."plugin_example/tests/*" = [
+  "PLC1901", # empty strings are falsey, but are less specific in tests
+  "PT005",   # we use always underscores and explicit names
+  "S101",    # assert
+  "SIM300",  # Yoda rocks in tests
+]
+lint.per-file-ignores."tests/*" = [
   "INP001",  # we don't care that these are in implicit namespace packages
   "PLC1901", # empty strings are falsey, but are less specific in tests
   "PT005",   # we use always underscores and explicit names
   "S101",    # assert
   "SIM300",  # Yoda rocks in tests
 ]
-"plugin_example/*" = [
-  "INP001",  # we don't care that these are in implicit namespace packages
+lint.unfixable = [
+  "F401",
 ]
-"plugin_example/tests/*" = [
-  "PLC1901", # empty strings are falsey, but are less specific in tests
-  "PT005",   # we use always underscores and explicit names
-  "S101",    # assert
-  "SIM300",  # Yoda rocks in tests
+lint.isort.lines-after-imports = 2
+lint.isort.lines-between-types = 1
+lint.ignore = [
+  "ANN",     # Mypy is better at this.
+  "C901",    # Leave complexity to me.
+  "COM812",  # conflicts with formatter
+  "D",       # We have different ideas about docstrings.
+  "ISC001",  # conflicts with formatter
+  "PLR0912", # Leave complexity to me.
+  "TRY301",  # Raise in try blocks can totally make sense.
 ]
-
-[tool.ruff.lint.isort]
-lines-between-types = 1
-lines-after-imports = 2
+lint.ignore-init-module-imports = true
 
 [tool.pytest.ini_options]
 minversion = "6.0"
 xfail_strict = true
 testpaths = [
-    "tests",
-    "plugin_example/tests",
+  "tests",
+  "plugin_example/tests",
 ]
 addopts = [
-    "-ra",
-    "--strict-markers",
+  "-ra",
+  "--strict-markers",
 ]
 
 [tool.towncrier]
@@ -235,7 +234,11 @@ start_string = "<!-- towncrier release notes start -->\n"
 template = "changelog.d/towncrier_template.md.jinja"
 title_format = ""
 issue_format = "[#{issue}](https://github.com/kpfleming/jinjanator-plugins/issues/{issue})"
-underlines = ["", "", ""]
+underlines = [
+  "",
+  "",
+  "",
+]
 
 [[tool.towncrier.section]]
 path = ""
@@ -283,4 +286,6 @@ warn_no_return = true
 warn_redundant_casts = true
 warn_return_any = true
 warn_unused_ignores = true
-exclude = ['plugin_example/build']
+exclude = [
+  'plugin_example/build',
+]
