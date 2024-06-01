@@ -181,6 +181,15 @@ src = [
 lint.select = [
   "ALL",
 ]
+lint.ignore = [
+  "ANN",     # Mypy is better at this.
+  "C901",    # Leave complexity to me.
+  "COM812",  # conflicts with formatter
+  "D",       # We have different ideas about docstrings.
+  "ISC001",  # conflicts with formatter
+  "PLR0912", # Leave complexity to me.
+  "TRY301",  # Raise in try blocks can totally make sense.
+]
 lint.per-file-ignores."plugin_example/*" = [
   "INP001", # we don't care that these are in implicit namespace packages
 ]
@@ -202,16 +211,6 @@ lint.unfixable = [
 ]
 lint.isort.lines-after-imports = 2
 lint.isort.lines-between-types = 1
-lint.ignore = [
-  "ANN",     # Mypy is better at this.
-  "C901",    # Leave complexity to me.
-  "COM812",  # conflicts with formatter
-  "D",       # We have different ideas about docstrings.
-  "ISC001",  # conflicts with formatter
-  "PLR0912", # Leave complexity to me.
-  "TRY301",  # Raise in try blocks can totally make sense.
-]
-lint.ignore-init-module-imports = true
 
 [tool.pytest.ini_options]
 minversion = "6.0"
