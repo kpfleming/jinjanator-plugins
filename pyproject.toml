@@ -79,6 +79,10 @@ packages = [
 
 [tool.hatch.envs.default]
 python = "3.12"
+installer = "uv"
+python-sources = [
+  "external",
+]
 
 [tool.hatch.envs.lint]
 dependencies = [
@@ -123,12 +127,11 @@ python = [
   "3.10",
   "3.11",
   "3.12",
-  "3.13",
 ]
 
 [tool.hatch.envs.ci.scripts]
 ci = [
-  "pip install ./plugin_example",
+  "uv pip install ./plugin_example",
   "rm -f .coverage",
   "pytest --verbose --cov-append  --cov-branch --cov=jinjanator_plugins",
   "coverage report --show-missing --fail-under=100",
