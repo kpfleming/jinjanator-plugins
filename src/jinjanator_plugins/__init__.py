@@ -1,36 +1,33 @@
-from __future__ import annotations
-
+from collections.abc import Iterable, Mapping
 from typing import (
-    TYPE_CHECKING,
     Any,
     Callable,
-    Iterable,
-    Mapping,
+    Optional,
     Protocol,
-    Type,
     TypeVar,
+    Union,
     cast,
 )
 
 import pluggy
 
-
-if TYPE_CHECKING:  # pragma: no cover
-    from typing_extensions import TypeAlias
+from typing_extensions import (
+    TypeAlias,
+)
 
 
 class Format(Protocol):
     name: str
-    suffixes: Iterable[str] | None
-    option_names: Iterable[str] | None
+    suffixes: Optional[Iterable[str]]
+    option_names: Optional[Iterable[str]]
 
-    def __init__(self, options: Iterable[str] | None) -> None: ...  # pragma: no cover
+    def __init__(self, options: Optional[Iterable[str]]) -> None: ...  # pragma: no cover
 
     def parse(self, data_string: str) -> Mapping[str, Any]: ...  # pragma: no cover
 
 
 class FormatOptionUnknownError(Exception):
-    def __init__(self, fmt: type[Format] | Format, option: str):
+    def __init__(self, fmt: Union[type[Format], Format], option: str):
         self.fmt = fmt
         self.option = option
 
@@ -48,7 +45,7 @@ class FormatOptionUnknownError(Exception):
 
 
 class FormatOptionUnsupportedError(Exception):
-    def __init__(self, fmt: type[Format] | Format, option: str, message: str):
+    def __init__(self, fmt: Union[type[Format], Format], option: str, message: str):
         self.fmt = fmt
         self.option = option
         self.message = message
@@ -58,7 +55,7 @@ class FormatOptionUnsupportedError(Exception):
 
 
 class FormatOptionValueError(Exception):
-    def __init__(self, fmt: type[Format] | Format, option: str, value: str, message: str):
+    def __init__(self, fmt: Union[type[Format], Format], option: str, value: str, message: str):
         self.fmt = fmt
         self.option = option
         self.message = message
@@ -75,7 +72,7 @@ F = TypeVar("F", bound=Callable[..., Any])
 hookspec = cast(Callable[[F], F], pluggy.HookspecMarker("jinjanator"))
 
 Identity: TypeAlias = str
-Formats: TypeAlias = Mapping[str, Type[Format]]
+Formats: TypeAlias = Mapping[str, type[Format]]
 Filters: TypeAlias = Mapping[str, Callable[..., Any]]
 Globals: TypeAlias = Mapping[str, Callable[..., Any]]
 Tests: TypeAlias = Mapping[str, Callable[..., Any]]

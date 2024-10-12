@@ -1,6 +1,5 @@
-from __future__ import annotations
-
-from typing import Iterable, Mapping
+from collections.abc import Iterable, Mapping
+from typing import Optional
 
 from jinjanator_plugins import (
     FormatOptionUnknownError,
@@ -11,10 +10,10 @@ from jinjanator_plugins import (
 
 class FormatNoOptions:
     name = "test"
-    suffixes: Iterable[str] | None = ()
-    option_names: Iterable[str] | None = ()
+    suffixes: Optional[Iterable[str]] = ()
+    option_names: Optional[Iterable[str]] = ()
 
-    def __init__(self, options: Iterable[str] | None) -> None:
+    def __init__(self, options: Optional[Iterable[str]]) -> None:
         pass
 
     def parse(
@@ -26,10 +25,10 @@ class FormatNoOptions:
 
 class FormatOptions:
     name = "test"
-    suffixes: Iterable[str] | None = ()
-    option_names: Iterable[str] | None = ("bart",)
+    suffixes: Optional[Iterable[str]] = ()
+    option_names: Optional[Iterable[str]] = ("bart",)
 
-    def __init__(self, options: Iterable[str] | None) -> None:
+    def __init__(self, options: Optional[Iterable[str]]) -> None:
         pass
 
     def parse(
