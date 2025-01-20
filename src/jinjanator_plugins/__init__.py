@@ -63,8 +63,7 @@ class FormatOptionValueError(Exception):
 
     def __str__(self) -> str:
         return (
-            f"Format {self.fmt.name}: option '{self.option}' value '{self.value}'"
-            f" {self.message}."
+            f"Format {self.fmt.name}: option '{self.option}' value '{self.value}' {self.message}."
         )
 
 
