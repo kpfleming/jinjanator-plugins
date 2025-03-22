@@ -15,7 +15,7 @@ def hook_callers() -> PluginHookCallers:
     pm = pluggy.PluginManager("jinjanator")
     pm.add_hookspecs(PluginHooks)
     pm.register(plugin)
-    return cast(PluginHookCallers, pm.hook)
+    return cast("PluginHookCallers", pm.hook)
 
 
 def test_identity(hook_callers: PluginHookCallers) -> None:

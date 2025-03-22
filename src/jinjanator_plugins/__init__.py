@@ -68,7 +68,7 @@ class FormatOptionValueError(Exception):
 
 
 F = TypeVar("F", bound=Callable[..., Any])
-hookspec = cast(Callable[[F], F], pluggy.HookspecMarker("jinjanator"))
+hookspec = cast("Callable[[F], F]", pluggy.HookspecMarker("jinjanator"))
 
 Identity: TypeAlias = str
 Formats: TypeAlias = Mapping[str, type[Format]]
@@ -85,27 +85,27 @@ PluginGlobalsHook: TypeAlias = Callable[[], Globals]
 PluginExtensionsHook: TypeAlias = Callable[[], Extensions]
 
 plugin_identity_hook = cast(
-    Callable[[PluginIdentityHook], PluginIdentityHook],
+    "Callable[[PluginIdentityHook], PluginIdentityHook]",
     pluggy.HookimplMarker("jinjanator"),
 )
 plugin_formats_hook = cast(
-    Callable[[PluginFormatsHook], PluginFormatsHook],
+    "Callable[[PluginFormatsHook], PluginFormatsHook]",
     pluggy.HookimplMarker("jinjanator"),
 )
 plugin_filters_hook = cast(
-    Callable[[PluginFiltersHook], PluginFiltersHook],
+    "Callable[[PluginFiltersHook], PluginFiltersHook]",
     pluggy.HookimplMarker("jinjanator"),
 )
 plugin_tests_hook = cast(
-    Callable[[PluginTestsHook], PluginTestsHook],
+    "Callable[[PluginTestsHook], PluginTestsHook]",
     pluggy.HookimplMarker("jinjanator"),
 )
 plugin_globals_hook = cast(
-    Callable[[PluginGlobalsHook], PluginGlobalsHook],
+    "Callable[[PluginGlobalsHook], PluginGlobalsHook]",
     pluggy.HookimplMarker("jinjanator"),
 )
 plugin_extensions_hook = cast(
-    Callable[[PluginExtensionsHook], PluginExtensionsHook],
+    "Callable[[PluginExtensionsHook], PluginExtensionsHook]",
     pluggy.HookimplMarker("jinjanator"),
 )
 
