@@ -28,6 +28,21 @@ See https://github.com/kpfleming/jinjanator-plugins/blob/main/.github/CONTRIBUTI
 
 <!-- towncrier release notes start -->
 
+## [25.1.0](https://github.com/kpfleming/jinjanator-plugins/tree/25.1.0) - 2025-10-18
+
+### Backwards-incompatible Changes
+
+- Support for Python 3.9 has been removed, and support for Python 3.14
+  has been added. Since the minimum supported version is now 3.10, the
+  code has been updated to use features introduced in that version.
+  
+
+
+### Additions
+
+- Added testing against Python 3.13 (again).
+  
+
 ## [24.2.0](https://github.com/kpfleming/jinjanator-plugins/tree/24.2.0) - 2024-10-13
 
 ### Backwards-incompatible Changes
