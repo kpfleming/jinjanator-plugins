@@ -1,7 +1,6 @@
 import codecs
 
 from collections.abc import Iterable, Mapping
-from typing import Optional
 
 from jinjanator_plugins import (
     Extensions,
@@ -30,10 +29,10 @@ def is_len12_test(value: str) -> bool:
 
 class SpamFormat:
     name = "spam"
-    suffixes: Optional[Iterable[str]] = (".spam",)
-    option_names: Optional[Iterable[str]] = ("ham",)
+    suffixes: Iterable[str] | None = (".spam",)
+    option_names: Iterable[str] | None = ("ham",)
 
-    def __init__(self, options: Optional[Iterable[str]]) -> None:
+    def __init__(self, options: Iterable[str] | None) -> None:
         self.ham = False
 
         if options:

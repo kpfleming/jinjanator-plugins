@@ -1,33 +1,27 @@
-from collections.abc import Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping
 from typing import (
     Any,
-    Callable,
-    Optional,
     Protocol,
+    TypeAlias,
     TypeVar,
-    Union,
     cast,
 )
 
 import pluggy
 
-from typing_extensions import (
-    TypeAlias,
-)
-
 
 class Format(Protocol):
     name: str
-    suffixes: Optional[Iterable[str]]
-    option_names: Optional[Iterable[str]]
+    suffixes: Iterable[str] | None
+    option_names: Iterable[str] | None
 
-    def __init__(self, options: Optional[Iterable[str]]) -> None: ...  # pragma: no cover
+    def __init__(self, options: Iterable[str] | None) -> None: ...  # pragma: no cover
 
     def parse(self, data_string: str) -> Mapping[str, Any]: ...  # pragma: no cover
 
 
 class FormatOptionUnknownError(Exception):
-    def __init__(self, fmt: Union[type[Format], Format], option: str):
+    def __init__(self, fmt: type[Format] | Format, option: str):
         self.fmt = fmt
         self.option = option
 
@@ -45,7 +39,7 @@ class FormatOptionUnknownError(Exception):
 
 
 class FormatOptionUnsupportedError(Exception):
-    def __init__(self, fmt: Union[type[Format], Format], option: str, message: str):
+    def __init__(self, fmt: type[Format] | Format, option: str, message: str):
         self.fmt = fmt
         self.option = option
         self.message = message
@@ -55,7 +49,7 @@ class FormatOptionUnsupportedError(Exception):
 
 
 class FormatOptionValueError(Exception):
-    def __init__(self, fmt: Union[type[Format], Format], option: str, value: str, message: str):
+    def __init__(self, fmt: type[Format] | Format, option: str, value: str, message: str):
         self.fmt = fmt
         self.option = option
         self.message = message
