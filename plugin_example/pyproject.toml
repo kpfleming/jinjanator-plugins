@@ -16,11 +16,11 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
 ]
-
 dependencies = [
   "jinjanator-plugins",
 ]
-entry-points.jinjanator.example = "jinjanator_plugin_example"
+[project.entry-points]
+jinjanator.example = "jinjanator_plugin_example"
 
 [tool.setuptools]
 py-modules = [
@@ -29,3 +29,4 @@ py-modules = [
 
 [tool.pyproject-fmt]
 max_supported_python = "3.14"
+table_format = "long"
