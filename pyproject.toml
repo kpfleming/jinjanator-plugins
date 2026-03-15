@@ -40,7 +40,7 @@ name = "Kevin P. Fleming"
 email = "jinjanator@kevin.km6g.us"
 [project.urls]
 "Bug Tracker" = "https://github.com/kpfleming/jinjanator-plugins/issues"
-"Homepage" = "https://github.com/kpfleming/jinjanator-plugins"
+Homepage = "https://github.com/kpfleming/jinjanator-plugins"
 
 [tool.hatch]
 [tool.hatch.build]
