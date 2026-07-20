@@ -135,6 +135,7 @@ fragments = [
   { path = "CHANGELOG.md", start-after = "<!-- towncrier release notes start -->", pattern = "\n(###.+?\n)## " },
   { text = """
 ---
+
 [→ Full Changelog](https://github.com/kpfleming/jinjanator-plugins/blob/main/CHANGELOG.md)
 """ },
 ]
@@ -142,6 +143,7 @@ fragments = [
 [[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
 pattern = "\\[(.+?)\\]\\(((?!https?://)\\S+?)\\)"
 replacement = "[\\1](https://github.com/kpfleming/jinjanator-plugins/tree/main/\\g<2>)"
+
 [[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
 pattern = "#(\\d+)"
 replacement = "[#\\1](https://github.com/kpfleming/jinjanator-plugins/issues/\\1)"
