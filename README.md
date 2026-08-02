@@ -196,7 +196,7 @@ def plugin_formats():
 
 @plugin_extensions_hook
 def plugin_extensions():
-    return ['jinja2.ext.debug']
+    return ["jinja2.ext.debug"]
 ```
 
 Note that the real example makes use of type annotations, but they
