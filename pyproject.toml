@@ -43,18 +43,47 @@ email = "jinjanator@kevin.km6g.us"
 Homepage = "https://github.com/kpfleming/jinjanator-plugins"
 
 [tool.hatch]
+[tool.hatch.version]
+source = "vcs"
+[tool.hatch.metadata.hooks]
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/markdown"
+fragments = [
+  { text = """
+# *jinjanator-plugins*: API package for jinjanator plugins
+
+""" },
+  { path = "README.md", start-after = "<!-- fancy-readme start -->", end-before = "<!-- fancy-readme end -->" },
+  { text = """
+## Release Information
+""" },
+  { path = "CHANGELOG.md", start-after = "<!-- towncrier release notes start -->", pattern = "\n(###.+?\n)## " },
+  { text = """
+---
+
+[→ Full Changelog](https://github.com/kpfleming/jinjanator-plugins/blob/main/CHANGELOG.md)
+""" },
+]
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
+pattern = "\\[(.+?)\\]\\(((?!https?://)\\S+?)\\)"
+replacement = "[\\1](https://github.com/kpfleming/jinjanator-plugins/tree/main/\\g<2>)"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
+pattern = "#(\\d+)"
+replacement = "[#\\1](https://github.com/kpfleming/jinjanator-plugins/issues/\\1)"
+[tool.hatch.metadata]
 [tool.hatch.build]
 exclude = [
   "*~",
   ".github",
 ]
+targets.wheel.packages = [
+  "src/jinjanator_plugins",
+]
 targets.sdist.include = [
   "src",
   "plugin_example",
   "*.md",
-]
-targets.wheel.packages = [
-  "src/jinjanator_plugins",
 ]
 [tool.hatch.envs]
 changelog.skip-install = true
@@ -75,6 +104,12 @@ ci.dependencies = [
   "pytest-cov",
   "pytest-icdiff",
 ]
+ci.scripts.ci = [
+  "uv pip install ./plugin_example",
+  "rm -f .coverage",
+  "pytest --verbose --cov-append  --cov-branch --cov=jinjanator_plugins",
+  "coverage report --show-missing --fail-under=100",
+]
 ci.matrix = [
   { python = [
     "3.10",
@@ -84,24 +119,22 @@ ci.matrix = [
     "3.14",
   ] },
 ]
-ci.scripts.ci = [
-  "uv pip install ./plugin_example",
-  "rm -f .coverage",
-  "pytest --verbose --cov-append  --cov-branch --cov=jinjanator_plugins",
-  "coverage report --show-missing --fail-under=100",
-]
 default.python = "3.13"
 default.installer = "uv"
 default.python-sources = [
   "external",
 ]
 lint.dependencies = [
-  "ruff>=0.2.0",
   "mypy",
   "pyproject-fmt",
   "pytest",        # needed for type-checking plugin_example
+  "ruff>=0.2.0",
 ]
 lint.scripts.lint = [
+  "ruff --version",
+  "mypy --version",
+  "shellcheck --version",
+  "pyproject-fmt --version",
   "ruff format",
   "ruff check --output-format=full --fix --show-fixes",
   "mypy --package jinjanator_plugins",
@@ -111,6 +144,10 @@ lint.scripts.lint = [
   "pyproject-fmt pyproject.toml plugin_example/pyproject.toml",
 ]
 lint.scripts.lint-action = [
+  "ruff --version",
+  "mypy --version",
+  "shellcheck --version",
+  "pyproject-fmt --version",
   "ruff format --check --diff",
   "ruff check --output-format=github",
   "mypy --package jinjanator_plugins",
@@ -119,36 +156,6 @@ lint.scripts.lint-action = [
   "shellcheck workflow-support/*.sh",
   "pyproject-fmt --check pyproject.toml plugin_example/pyproject.toml",
 ]
-[tool.hatch.metadata]
-[tool.hatch.metadata.hooks]
-[tool.hatch.metadata.hooks.fancy-pypi-readme]
-content-type = "text/markdown"
-fragments = [
-  { text = """
-# *jinjanator-plugins*: API package for jinjanator plugins
-
-""" },
-  { path = "README.md", start-after = "<!-- fancy-readme start -->", end-before = "<!-- fancy-readme end -->" },
-  { text = """
-## Release Information
-""" },
-  { path = "CHANGELOG.md", start-after = "<!-- towncrier release notes start -->", pattern = "\n(###.+?\n)## " },
-  { text = """
----
-
-[→ Full Changelog](https://github.com/kpfleming/jinjanator-plugins/blob/main/CHANGELOG.md)
-""" },
-]
-
-[[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
-pattern = "\\[(.+?)\\]\\(((?!https?://)\\S+?)\\)"
-replacement = "[\\1](https://github.com/kpfleming/jinjanator-plugins/tree/main/\\g<2>)"
-
-[[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
-pattern = "#(\\d+)"
-replacement = "[#\\1](https://github.com/kpfleming/jinjanator-plugins/issues/\\1)"
-[tool.hatch.version]
-source = "vcs"
 
 [tool.ruff]
 line-length = 100
@@ -221,7 +228,6 @@ no_implicit_optional = true
 [tool.pytest]
 [tool.pytest.ini_options]
 minversion = "6.0"
-xfail_strict = true
 testpaths = [
   "tests",
   "plugin_example/tests",
@@ -230,6 +236,7 @@ addopts = [
   "-ra",
   "--strict-markers",
 ]
+xfail_strict = true
 
 [tool.towncrier]
 name = "jinjanator-plugins"
