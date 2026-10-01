@@ -28,6 +28,13 @@ See https://github.com/kpfleming/jinjanator-plugins/blob/main/.github/CONTRIBUTI
 
 <!-- towncrier release notes start -->
 
+## [26.1.0](https://github.com/kpfleming/jinjanator-plugins/tree/26.1.0) - 2026-10-01
+
+### Backwards-incompatible Changes
+
+- Support for Python 3.10 has been removed.
+  
+
 ## [25.1.0](https://github.com/kpfleming/jinjanator-plugins/tree/25.1.0) - 2025-10-18
 
 ### Backwards-incompatible Changes
